@@ -25,8 +25,6 @@ namespace DatingApp.API {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
 
-          
-
             services.AddCors (options => {
                 options.AddPolicy (MyAllowSpecificOrigins,
                     builder => {
@@ -37,7 +35,6 @@ namespace DatingApp.API {
 
             services.AddDbContext<DataContext> (x => x.UseSqlite (Configuration.GetConnectionString ("DefaultConnection")));
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
-              services.AddScoped<IAuthRepository, AuthRepository> ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +46,6 @@ namespace DatingApp.API {
             }
 
             // app.UseHttpsRedirection();
-
             app.UseCors (MyAllowSpecificOrigins);
             app.UseMvc ();
         }

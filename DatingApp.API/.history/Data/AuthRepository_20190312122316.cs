@@ -4,7 +4,7 @@ using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Data {
-    public class AuthRepository :IAuthRepository {
+    public class AuthRepository : IAuthRepository {
         private DataContext _context;
 
         public AuthRepository (DataContext context) {
@@ -30,45 +30,33 @@ namespace DatingApp.API.Data {
             }
         }
 
-       
+        Task<bool> IAuthRepository.UserExists (string username) {
+            throw new System.NotImplementedException ();
+        }
 
-        public async Task<User> Login (string username, string password) {
-
-            var user = await _context.Users.FirstOrDefaultAsync (x => x.Username == username);
-
-            if (user == null)
-                return null;
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-
-                return null;
-
-            else
-                return user;
+      async  Task<User> IAuthRepository.Login (string username, string password) {
+          
+          var user = await _context.Users.FirstOrDefaultAsync(x=>x.Username==username);
+          
+          if(user==null)
+          return null;
+VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt);
 
         }
 
-        private bool VerifyPasswordHash (string password, byte[] passwordHash, byte[] passwordSalt) {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512 (passwordSalt)) {
-
+        private void VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+             using (var hmac = new System.Security.Cryptography.HMACSHA512 (passwordSalt)) {
+                
                 var computedHash = hmac.ComputeHash (System.Text.Encoding.UTF8.GetBytes (password));
 
-                for (int i = 0; i < computedHash.Length; i++) {
-                    if (computedHash[i] != passwordHash[i])
-                        return false;
+                for(int i=0;i<computedHash.Length;i++)
+                {
+                    if(computedHash[i]!=passwordHash[i])
+                    return false;
                 }
                 return true;
             }
         }
-
-        
-        public async Task<bool>  UserExists (string username) {
-          if(await _context.Users.AnyAsync(x=>x.Username == username))
-          return true;
-
-          return false;
-
-        }
-
-         
     }
 }
