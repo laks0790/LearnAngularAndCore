@@ -14,8 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace DatingApp.API {
     public class Startup {
@@ -43,8 +41,8 @@ namespace DatingApp.API {
            .AddJwtBearer(options=>{
                options.TokenValidationParameters =new TokenValidationParameters
                {
-                   ValidateIssuerSigningKey=true,
-                   IssuerSigningKey=new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                   ValidateIssuesSigningKey=true,
+                   IssuerSigningKey=new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("AppSettings:Token").Value)),
                    ValidateIssuer=false,
                    ValidateAudience=false
                };

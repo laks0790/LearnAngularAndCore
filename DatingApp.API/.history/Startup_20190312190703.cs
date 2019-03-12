@@ -43,7 +43,7 @@ namespace DatingApp.API {
            .AddJwtBearer(options=>{
                options.TokenValidationParameters =new TokenValidationParameters
                {
-                   ValidateIssuerSigningKey=true,
+                   ValidateIssuesSigningKey=true,
                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
                    ValidateIssuer=false,
                    ValidateAudience=false
